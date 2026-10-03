@@ -7,6 +7,7 @@ class Array {
 public:
     Array();
     ~Array();
+    Array(const Array &other);
 
     std::size_t size() const;
     std::string get(std::size_t index) const;

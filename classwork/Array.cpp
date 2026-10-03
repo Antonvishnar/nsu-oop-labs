@@ -6,6 +6,15 @@ Array::~Array() {
     clear();
 }
 
+Array::Array(const Array &other) : data_(nullptr), size_(other.size_){
+    if (size_ > 0) {
+        data_ = new std::string[size_];
+        for (std::size_t i = 0; i < size_; ++i) {
+            data_[i] = other.data_[i];
+        }
+    }
+}
+
 std::size_t Array::size() const {
     return size_;
 }
