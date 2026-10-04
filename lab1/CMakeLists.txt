@@ -11,5 +11,7 @@ target_link_libraries(${exe_name} corelib)
 
 add_executable(${test_name}
         test/test_bi_constructors.cpp
+        test/test_bi_output.cpp
+        test/test_bi_operators.cpp
 )
 target_link_libraries(${test_name} gtest_main corelib)

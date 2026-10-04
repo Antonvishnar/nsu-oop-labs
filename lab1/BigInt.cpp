@@ -29,6 +29,26 @@ BigInt::~BigInt() {
     delete[] value_;
 }
 
+BigInt::BigInt(const BigInt &other)
+    : value_(new char[other.size_]), size_(other.size_), is_negative_(other.is_negative_){
+    for (std::size_t i = 0; i < size_; ++i) {
+        value_[i] = other.value_[i];
+    }
+}
+
+BigInt & BigInt::operator=(const BigInt &other) {
+    if (this != &other) {
+        delete[] value_;
+        size_ = other.size_;
+        is_negative_ = other.is_negative_;
+        value_ = new char[size_];
+        for (std::size_t i = 0; i <size_; ++i) {
+            value_[i] = other.value_[i];
+        }
+    }
+    return *this;
+}
+
 BigInt::operator std::string() const {
     std::string res;
     if (is_negative_) res += '-';

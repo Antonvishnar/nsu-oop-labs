@@ -9,6 +9,9 @@ public:
     BigInt(long long value);
     ~BigInt();
 
+    BigInt(const BigInt &other);
+    BigInt& operator=(const BigInt &other);
+
     operator std::string() const;
 private:
     char* value_;
