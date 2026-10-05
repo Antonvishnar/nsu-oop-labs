@@ -14,8 +14,18 @@ public:
 
     friend bool operator==(const BigInt &BI_1, const BigInt &BI_2);
     friend bool operator<(const BigInt &BI_1, const BigInt &BI_2);
-
     bool operator!() const;
+
+    BigInt operator-() const;
+    BigInt& operator++();
+    BigInt operator++(int);
+    BigInt& operator--();
+    BigInt operator--(int);
+
+    BigInt& operator+=(const BigInt &other);
+    BigInt& operator-=(const BigInt &other);
+
+    friend BigInt operator+(const BigInt &BI_1, const BigInt &BI_2);
 
     operator std::string() const;
 private:
@@ -31,5 +41,7 @@ bool operator!=(const BigInt &BI_1, const BigInt &BI_2);
 bool operator>(const BigInt &BI_1, const BigInt &BI_2);
 bool operator<=(const BigInt &BI_1, const BigInt &BI_2);
 bool operator>=(const BigInt &BI_1, const BigInt &BI_2);
+
+BigInt operator-(const BigInt &BI_1, const BigInt &BI_2);
 
 #endif //OOP_NSU_LABS_BIGINT_H

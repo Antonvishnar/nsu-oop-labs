@@ -53,6 +53,46 @@ bool BigInt::operator!() const {
     return false;
 }
 
+BigInt BigInt::operator-() const {
+    if (value_[0] == '0') return *this;
+    BigInt res(*this);
+    res.is_negative_ = !res.is_negative_;
+    return res;
+}
+
+BigInt &BigInt::operator++() {
+    *this += 1;
+    return *this;
+}
+
+BigInt BigInt::operator++(int) {
+    BigInt res(*this);
+    ++(*this);
+    return res;
+}
+
+BigInt &BigInt::operator--() {
+    *this -= 1;
+    return *this;
+}
+
+BigInt BigInt::operator--(int) {
+    BigInt res(*this);
+    --(*this);
+    return res;
+}
+
+BigInt & BigInt::operator+=(const BigInt &other) {
+    *this = *this + other;
+    return *this;
+}
+
+BigInt &BigInt::operator-=(const BigInt &other) {
+    *this = *this - other;
+    return *this;
+}
+
+
 BigInt::operator std::string() const {
     std::string res;
     if (is_negative_) res += '-';
@@ -141,6 +181,66 @@ bool operator<(const BigInt &BI_1, const BigInt &BI_2){
     return false;
 }
 
+BigInt operator+(const BigInt& BI_1, const BigInt& BI_2) {
+    std::string s1(BI_1.value_, BI_1.size_);
+    std::string s2(BI_2.value_, BI_2.size_);
+    std::string res;
+
+    if (s1 == s2) return BigInt(0);
+
+    if (BI_1.is_negative_ == BI_2.is_negative_) {
+        int i = s1.size() - 1;
+        int j = s2.size() - 1;
+        int adding = 0;
+        while (i >= 0 || j >= 0 || adding) {
+            int sum = adding;
+            if (i >= 0) {
+                sum += s1[i] - '0';
+                i--;
+            }
+            if (j >= 0) {
+                sum += s2[j] - '0';
+                j--;
+            }
+            res = static_cast<char>(sum % 10 + '0') + res;
+            adding = sum / 10;
+        }
+        if (BI_1.is_negative_)
+            res = "-" + res;
+        return BigInt(res);
+    }
+
+    bool first = s1.size() > s2.size() || (s1.size() == s2.size() && s1 > s2);
+
+    std::string big = first ? s1 : s2;
+    std::string small = first ? s2 : s1;
+
+    int i = big.size() - 1;
+    int j = small.size() - 1;
+    int borrow = 0;
+
+    while (i >= 0) {
+        int x = big[i] - '0' - borrow;
+        int y = j >= 0 ? small[j] - '0' : 0;
+
+        if (x < y) {
+            x += 10;
+            borrow = 1;
+        } else {
+            borrow = 0;
+        }
+        res = static_cast<char>(x - y + '0') + res;
+        i--;
+        if (j >= 0)
+            j--;
+    }
+    while (res.size() > 1 && res[0] == '0') res.erase(0, 1);
+
+    if (first ? BI_1.is_negative_ : BI_2.is_negative_)
+        res = "-" + res;
+    return BigInt(res);
+}
+
 bool operator>(const BigInt &BI_1, const BigInt &BI_2){
     return BI_2 < BI_1;
 }
@@ -151,4 +251,8 @@ bool operator<=(const BigInt &BI_1, const BigInt &BI_2){
 
 bool operator>=(const BigInt &BI_1, const BigInt &BI_2){
     return !(BI_1 < BI_2);
+}
+
+BigInt operator-(const BigInt &BI_1, const BigInt &BI_2) {
+    return BI_1 + (-BI_2);
 }
