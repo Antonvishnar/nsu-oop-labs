@@ -48,6 +48,11 @@ BigInt::~BigInt() {
     delete[] value_;
 }
 
+bool BigInt::operator!() const {
+    if (size_ == 1 && value_[0] == '0') return true;
+    return false;
+}
+
 BigInt::operator std::string() const {
     std::string res;
     if (is_negative_) res += '-';

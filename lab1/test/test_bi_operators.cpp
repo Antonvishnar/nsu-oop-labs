@@ -8,7 +8,7 @@ TEST(BIOperators, CopyAssign) {
     EXPECT_EQ(static_cast<std::string>(original), static_cast<std::string>(copy));
 }
 
-TEST(BIComparisons, AllComparisons) {
+TEST(BIOperators, Comparisons) {
     BigInt BI_1(1000);
     BigInt BI_2(2000);
     BigInt BI_3("-1500");
@@ -24,4 +24,11 @@ TEST(BIComparisons, AllComparisons) {
 
     EXPECT_TRUE(10000 >= BI_1);
     EXPECT_TRUE(-10000 <= BI_4);
+}
+
+TEST(BIOperators, LogicalNot) {
+    BigInt zero("0");
+    BigInt neg_val(-999);
+    EXPECT_TRUE(!zero);
+    EXPECT_FALSE(!neg_val);
 }
