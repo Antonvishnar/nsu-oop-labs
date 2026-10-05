@@ -92,6 +92,15 @@ BigInt &BigInt::operator-=(const BigInt &other) {
     return *this;
 }
 
+BigInt & BigInt::operator*=(const BigInt &other) {
+    *this = *this * other;
+    return *this;
+}
+
+BigInt & BigInt::operator/=(const BigInt &other) {
+    *this = *this / other;
+    return *this;
+}
 
 BigInt::operator std::string() const {
     std::string res;
@@ -186,11 +195,9 @@ BigInt operator+(const BigInt& BI_1, const BigInt& BI_2) {
     std::string s2(BI_2.value_, BI_2.size_);
     std::string res;
 
-    if (s1 == s2) return BigInt(0);
-
     if (BI_1.is_negative_ == BI_2.is_negative_) {
-        int i = s1.size() - 1;
-        int j = s2.size() - 1;
+        int i = static_cast<int>(s1.size()) - 1;
+        int j = static_cast<int>(s2.size()) - 1;
         int adding = 0;
         while (i >= 0 || j >= 0 || adding) {
             int sum = adding;
@@ -205,18 +212,22 @@ BigInt operator+(const BigInt& BI_1, const BigInt& BI_2) {
             res = static_cast<char>(sum % 10 + '0') + res;
             adding = sum / 10;
         }
-        if (BI_1.is_negative_)
+        if (BI_1.is_negative_) {
             res = "-" + res;
-        return BigInt(res);
+        }
+        return {res};
+    }
+
+    if (s1 == s2) {
+        return {0};
     }
 
     bool first = s1.size() > s2.size() || (s1.size() == s2.size() && s1 > s2);
-
     std::string big = first ? s1 : s2;
     std::string small = first ? s2 : s1;
 
-    int i = big.size() - 1;
-    int j = small.size() - 1;
+    int i = static_cast<int>(big.size()) - 1;
+    int j = static_cast<int>(small.size()) - 1;
     int borrow = 0;
 
     while (i >= 0) {
@@ -231,14 +242,17 @@ BigInt operator+(const BigInt& BI_1, const BigInt& BI_2) {
         }
         res = static_cast<char>(x - y + '0') + res;
         i--;
-        if (j >= 0)
-            j--;
+        if (j >= 0) j--;
     }
-    while (res.size() > 1 && res[0] == '0') res.erase(0, 1);
 
-    if (first ? BI_1.is_negative_ : BI_2.is_negative_)
+    while (res.size() > 1 && res[0] == '0') {
+        res.erase(0, 1);
+    }
+
+    if (first ? BI_1.is_negative_ : BI_2.is_negative_) {
         res = "-" + res;
-    return BigInt(res);
+    }
+    return {res};
 }
 
 bool operator>(const BigInt &BI_1, const BigInt &BI_2){
@@ -246,7 +260,7 @@ bool operator>(const BigInt &BI_1, const BigInt &BI_2){
 }
 
 bool operator<=(const BigInt &BI_1, const BigInt &BI_2){
-    return !(BI_2 < BI_1);
+    return BI_2 >= BI_1;
 }
 
 bool operator>=(const BigInt &BI_1, const BigInt &BI_2){
@@ -255,4 +269,44 @@ bool operator>=(const BigInt &BI_1, const BigInt &BI_2){
 
 BigInt operator-(const BigInt &BI_1, const BigInt &BI_2) {
     return BI_1 + (-BI_2);
+}
+
+BigInt operator*(const BigInt &BI_1, const BigInt &BI_2) {
+    if (BI_1 == 0 || BI_2 == 0) {
+        return {0};
+    }
+    BigInt a = BI_1;
+    if (a < 0) a = -a;
+    BigInt b = BI_2;
+    if (b < 0) b = -b;
+    BigInt res = 0;
+    while (b != 0) {
+        res += a;
+        --b;
+    }
+    if ((BI_1 < 0 && BI_2 > 0) || (BI_1 > 0 && BI_2 < 0)) {
+        res = -res;
+    }
+    return res;
+}
+
+BigInt operator/(const BigInt& BI_1, const BigInt& BI_2) {
+    if (BI_2 == 0) {
+        throw std::invalid_argument("Divide on zero");
+    }
+    BigInt a = BI_1;
+    if (a < 0) a = -a;
+    BigInt b = BI_2;
+    if (b < 0) b = -b;
+
+    BigInt res = 0;
+    while (a >= b) {
+        a -= b;
+        ++res;
+    }
+
+    if ((BI_1 < 0 && BI_2 > 0) || (BI_1 > 0 && BI_2 < 0)) {
+        if (res != 0) res = -res;
+    }
+    return res;
 }

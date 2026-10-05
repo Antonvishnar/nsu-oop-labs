@@ -24,6 +24,8 @@ public:
 
     BigInt& operator+=(const BigInt &other);
     BigInt& operator-=(const BigInt &other);
+    BigInt& operator*=(const BigInt &other);
+    BigInt& operator/=(const BigInt &other);
 
     friend BigInt operator+(const BigInt &BI_1, const BigInt &BI_2);
 
@@ -33,7 +35,7 @@ private:
     std::size_t size_;
     bool is_negative_;
 
-    std::string validate_string_(const std::string &value);
+    static std::string validate_string_(const std::string &value);
 };
 std::ostream& operator<<(std::ostream& os, const BigInt& bi);
 
@@ -43,5 +45,7 @@ bool operator<=(const BigInt &BI_1, const BigInt &BI_2);
 bool operator>=(const BigInt &BI_1, const BigInt &BI_2);
 
 BigInt operator-(const BigInt &BI_1, const BigInt &BI_2);
+BigInt operator*(const BigInt &BI_1, const BigInt &BI_2);
+BigInt operator/(const BigInt &BI_1, const BigInt &BI_2);
 
 #endif //OOP_NSU_LABS_BIGINT_H
