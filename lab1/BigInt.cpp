@@ -1,5 +1,4 @@
 #include "BigInt.h"
-
 #include <stdexcept>
 
 BigInt::BigInt() : value_(new char[1]), size_(1), is_negative_(false) {
@@ -25,10 +24,6 @@ BigInt::BigInt(const std::string &value) {
 
 BigInt::BigInt(long long value) : BigInt(std::to_string(value)) {}
 
-BigInt::~BigInt() {
-    delete[] value_;
-}
-
 BigInt::BigInt(const BigInt &other)
     : value_(new char[other.size_]), size_(other.size_), is_negative_(other.is_negative_){
     for (std::size_t i = 0; i < size_; ++i) {
@@ -47,6 +42,10 @@ BigInt & BigInt::operator=(const BigInt &other) {
         }
     }
     return *this;
+}
+
+BigInt::~BigInt() {
+    delete[] value_;
 }
 
 BigInt::operator std::string() const {
@@ -96,3 +95,55 @@ std::string BigInt::validate_string_(const std::string &value) {
 std::ostream& operator<<(std::ostream& os, const BigInt& bi) {
     return os << static_cast<std::string>(bi);
 };
+
+bool operator==(const BigInt &BI_1, const BigInt &BI_2) {
+    if (BI_1.size_ != BI_2.size_) return false;
+    if (BI_1.is_negative_ != BI_2.is_negative_) return false;
+    for (size_t i = 0; i < BI_1.size_; ++i) {
+        if (BI_1.value_[i] != BI_2.value_[i]) return false;
+    }
+    return true;
+}
+
+bool operator!=(const BigInt &BI_1, const BigInt &BI_2){
+    return !(BI_1 == BI_2);
+}
+
+bool operator<(const BigInt &BI_1, const BigInt &BI_2){
+    if (BI_1.is_negative_ != BI_2.is_negative_) {
+        return BI_1.is_negative_;
+    }
+    if (BI_1.is_negative_) {
+        if (BI_1.size_ != BI_2.size_) {
+            return BI_1.size_ > BI_2.size_;
+        }
+        for (std::size_t i = 0; i < BI_1.size_; ++i) {
+            if (BI_1.value_[i] != BI_2.value_[i]) {
+                return BI_1.value_[i] > BI_2.value_[i];
+            }
+        }
+        return false;
+    }
+
+    if (BI_1.size_ != BI_2.size_) {
+        return BI_1.size_ < BI_2.size_;
+    }
+    for (std::size_t i = 0; i < BI_1.size_; ++i) {
+        if (BI_1.value_[i] != BI_2.value_[i]) {
+            return BI_1.value_[i] < BI_2.value_[i];
+        }
+    }
+    return false;
+}
+
+bool operator>(const BigInt &BI_1, const BigInt &BI_2){
+    return BI_2 < BI_1;
+}
+
+bool operator<=(const BigInt &BI_1, const BigInt &BI_2){
+    return !(BI_2 < BI_1);
+}
+
+bool operator>=(const BigInt &BI_1, const BigInt &BI_2){
+    return !(BI_1 < BI_2);
+}

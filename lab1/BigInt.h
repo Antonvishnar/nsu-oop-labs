@@ -12,6 +12,9 @@ public:
     BigInt(const BigInt &other);
     BigInt& operator=(const BigInt &other);
 
+    friend bool operator==(const BigInt &BI_1, const BigInt &BI_2);
+    friend bool operator<(const BigInt &BI_1, const BigInt &BI_2);
+
     operator std::string() const;
 private:
     char* value_;
@@ -22,5 +25,9 @@ private:
 };
 std::ostream& operator<<(std::ostream& os, const BigInt& bi);
 
+bool operator!=(const BigInt &BI_1, const BigInt &BI_2);
+bool operator>(const BigInt &BI_1, const BigInt &BI_2);
+bool operator<=(const BigInt &BI_1, const BigInt &BI_2);
+bool operator>=(const BigInt &BI_1, const BigInt &BI_2);
 
 #endif //OOP_NSU_LABS_BIGINT_H
