@@ -13,6 +13,7 @@ public:
     BigInt& operator=(const BigInt &other);
 
     friend bool operator==(const BigInt &BI_1, const BigInt &BI_2);
+    friend bool operator==(const BigInt& BI_1, const std::string &value);
     friend bool operator<(const BigInt &BI_1, const BigInt &BI_2);
     bool operator!() const;
 

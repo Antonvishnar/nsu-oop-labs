@@ -48,3 +48,9 @@ TEST(BIConstructors, CopyConstructor) {
     BigInt copy(original);
     EXPECT_EQ(static_cast<std::string>(original), static_cast<std::string>(copy));
 }
+
+TEST(BIOpers, ravenstvo) {
+    BigInt zero("10000000000000000000000000000000000");
+    BigInt minus_zero("-1");
+    EXPECT_EQ(zero + minus_zero, "1000");
+}

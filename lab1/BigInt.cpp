@@ -159,6 +159,11 @@ bool operator==(const BigInt &BI_1, const BigInt &BI_2) {
     return true;
 }
 
+bool operator==(const BigInt &BI_1, const std::string &value) {
+    BigInt bi(value);
+    return BI_1 == bi;
+}
+
 bool operator!=(const BigInt &BI_1, const BigInt &BI_2){
     return !(BI_1 == BI_2);
 }
@@ -209,7 +214,7 @@ BigInt operator+(const BigInt& BI_1, const BigInt& BI_2) {
                 sum += s2[j] - '0';
                 j--;
             }
-            res = static_cast<char>(sum % 10 + '0') + res;
+            res.insert(0, 1, static_cast<char>(sum % 10 + '0'));
             adding = sum / 10;
         }
         if (BI_1.is_negative_) {
@@ -240,7 +245,7 @@ BigInt operator+(const BigInt& BI_1, const BigInt& BI_2) {
         } else {
             borrow = 0;
         }
-        res = static_cast<char>(x - y + '0') + res;
+        res.insert(0, 1, static_cast<char>(x - y + '0'));
         i--;
         if (j >= 0) j--;
     }
@@ -272,7 +277,7 @@ BigInt operator-(const BigInt &BI_1, const BigInt &BI_2) {
 }
 
 BigInt operator*(const BigInt &BI_1, const BigInt &BI_2) {
-    if (BI_1 == 0 || BI_2 == 0) {
+    if (BI_1 == "0" || BI_2 == "0") {
         return {0};
     }
     BigInt a = BI_1;
@@ -291,7 +296,7 @@ BigInt operator*(const BigInt &BI_1, const BigInt &BI_2) {
 }
 
 BigInt operator/(const BigInt& BI_1, const BigInt& BI_2) {
-    if (BI_2 == 0) {
+    if (BI_2 == "0") {
         throw std::invalid_argument("Divide on zero");
     }
     BigInt a = BI_1;
