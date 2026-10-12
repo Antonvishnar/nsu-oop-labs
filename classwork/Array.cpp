@@ -1,12 +1,12 @@
 #include "Array.h"
 
-Array::Array() : data_(nullptr), size_(0) {}
+Array::Array() : Container(0), data_(nullptr) {}
 
 Array::~Array() {
     clear();
 }
 
-Array::Array(const Array &other) : data_(nullptr), size_(other.size_){
+Array::Array(const Array &other) : Container(other.size()), data_(nullptr) {
     if (size_ > 0) {
         data_ = new std::string[size_];
         for (std::size_t i = 0; i < size_; ++i) {
@@ -49,10 +49,6 @@ bool Array::operator==(const Array &other) const {
 
 bool Array::operator!=(const Array &other) const {
     return !(*this == other);
-}
-
-std::size_t Array::size() const {
-    return size_;
 }
 
 void Array::clear() {
