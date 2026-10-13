@@ -20,3 +20,4 @@ FetchContent_MakeAvailable(googletest)
 
 add_subdirectory(classwork)
 add_subdirectory(lab1)
+add_subdirectory(lab2)
