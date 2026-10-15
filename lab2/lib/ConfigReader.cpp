@@ -3,6 +3,9 @@
 
 ConfigReader::ConfigReader(const std::string &filepath) {
     file_.open(filepath);
+    if (!file_.is_open()) {
+        throw std::runtime_error("Cannot open config file");
+    }
 }
 
 std::optional<Command> ConfigReader::ReadNextLine() {
@@ -13,7 +16,9 @@ std::optional<Command> ConfigReader::ReadNextLine() {
         lineNumber_++;
         return std::nullopt;
     } catch (std::exception &e) {
-        std::cerr << e.what() << std::endl;
+        std::cout<<lineNumber_<<'\n';
+        std::cerr << e.what() << '\n';
     }
     return std::nullopt;
 }
+
