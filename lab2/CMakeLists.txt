@@ -6,4 +6,5 @@ add_executable(${exe_name} main.cpp
         lib/ConfigReader.h
         lib/ConfigReader.cpp
         lib/converters/MuteConverter.h
-        lib/converters/MuteConverterCreator.h)
+        lib/converters/MuteConverterCreator.h
+        lib/SoundProcessor.h)

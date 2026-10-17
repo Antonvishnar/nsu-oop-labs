@@ -8,7 +8,7 @@
 
 class MuteConverterCreator : public ConverterCreator{
 public:
-    Converter* createConverter() override;
+    Converter* createConverter(const Command& command) override;
 };
 
 

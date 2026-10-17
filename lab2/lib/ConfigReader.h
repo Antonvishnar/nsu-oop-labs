@@ -17,6 +17,8 @@ public:
 private:
     std::ifstream file_;
     std::size_t lineNumber_ = 0;
+
+    static Command parseLineIntoCommand(const std::string& line);
 };
 
 
