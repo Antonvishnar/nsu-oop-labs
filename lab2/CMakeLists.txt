@@ -11,4 +11,6 @@ add_executable(${exe_name} main.cpp
         lib/converters/Converter.h
         lib/SoundProcessor.cpp
         lib/WavReader.h
-        lib/WavReader.cpp)
+        lib/WavReader.cpp
+        lib/WavWriter.h
+        lib/WavWriter.cpp)

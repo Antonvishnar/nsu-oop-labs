@@ -16,6 +16,7 @@ public:
     WavReader(const std::string& filepath);
 
     std::vector<int16_t> readNextSamples(double deltaTime);
+    std::vector<int16_t> readHeader();
 private:
     std::ifstream file_;
 };

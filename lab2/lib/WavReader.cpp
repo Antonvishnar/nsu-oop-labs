@@ -23,3 +23,12 @@ std::vector<int16_t> WavReader::readNextSamples(double deltaTime) {
     newSamples.resize(bytesRead / bits);
     return newSamples;
 }
+
+std::vector<int16_t> WavReader::readHeader() {
+    std::vector<int16_t> header(44);
+    const auto pos = file_.tellg();
+    file_.seekg(0, std::ios::beg);
+    file_.read(reinterpret_cast<char*>(header.data()), header.size());
+    file_.seekg(pos);
+    return header;
+}

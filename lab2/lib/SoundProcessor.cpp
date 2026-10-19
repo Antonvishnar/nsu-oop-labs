@@ -4,13 +4,6 @@
 
 #include "SoundProcessor.h"
 
-void SoundProcessor::ExecCommand() {
-    configReader_.ReadNextLine();
-    
-}
-
 void SoundProcessor::ExecAllCommands() {
-    while () {
-        ExecCommand();
-    }
+
 }
