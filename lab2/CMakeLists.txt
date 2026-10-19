@@ -7,4 +7,8 @@ add_executable(${exe_name} main.cpp
         lib/ConfigReader.cpp
         lib/converters/MuteConverter.h
         lib/converters/MuteConverterCreator.h
-        lib/SoundProcessor.h)
+        lib/SoundProcessor.h
+        lib/converters/Converter.h
+        lib/SoundProcessor.cpp
+        lib/WavReader.h
+        lib/WavReader.cpp)
