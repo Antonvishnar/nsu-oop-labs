@@ -1,12 +1,12 @@
 #include "Array.h"
 
-Array::Array() : Container(0), data_(nullptr) {}
+Array::Array() : data_(nullptr), size_(0) {}
 
 Array::~Array() {
     clear();
 }
 
-Array::Array(const Array &other) : Container(other.size()), data_(nullptr) {
+Array::Array(const Array &other) : size_(other.size_), data_(nullptr) {
     if (size_ > 0) {
         data_ = new std::string[size_];
         for (std::size_t i = 0; i < size_; ++i) {
@@ -15,7 +15,7 @@ Array::Array(const Array &other) : Container(other.size()), data_(nullptr) {
     }
 }
 
-Array& Array::operator=(const Array &other) {
+Array& Array::operator=(const Array& other) {
     if (this == &other) {
         return *this;
     }
@@ -39,7 +39,7 @@ const std::string &Array::operator[](size_t index) const {
     return data_[index];
 }
 
-bool Array::operator==(const Array &other) const {
+bool Array::operator==(const Array& other) const {
     if (size_ != other.size_) return false;
     for (size_t i = 0; i < size_; ++i) {
         if (data_[i] != other.data_[i]) return false;
@@ -47,7 +47,7 @@ bool Array::operator==(const Array &other) const {
     return true;
 }
 
-bool Array::operator!=(const Array &other) const {
+bool Array::operator!=(const Array& other) const {
     return !(*this == other);
 }
 
@@ -59,7 +59,7 @@ void Array::clear() {
     }
 }
 
-void Array::put(std::size_t index, const std::string &value) {
+void Array::put(std::size_t index, const std::string& value) {
     if (index >= size_) {
         auto* new_data = new std::string[index + 1];
         for (std::size_t i = 0; i < size_; ++i) {
@@ -70,6 +70,10 @@ void Array::put(std::size_t index, const std::string &value) {
         size_ = index + 1;
     }
     data_[index] = value;
+}
+
+std::size_t Array::size() const {
+    return size_;
 }
 
 std::string Array::get(std::size_t index) const{

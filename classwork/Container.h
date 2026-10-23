@@ -3,12 +3,8 @@
 
 class Container {
 public:
-    Container(std::size_t size): size_(size) {}
-    Container() : Container(0) {}
-
-    std::size_t size() const {return size_;};
-protected:
-    std::size_t size_;
+    virtual ~Container() = default;
+    virtual std::size_t size() const = 0;
 };
 
 #endif //OOP_NSU_LABS_CONTAINER_H

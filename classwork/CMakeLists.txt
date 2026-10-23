@@ -1,3 +1,4 @@
 file(GLOB SOURCES CONFIGURE_DEPENDS "*.cpp" "*.h")
 add_executable(classwork ${SOURCES}
-        Container.h)
+        Container.h
+        List.h)

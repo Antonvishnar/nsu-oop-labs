@@ -21,8 +21,11 @@ public:
     void clear();
     void put(std::size_t index, const std::string& value);
 
+    std::size_t size() const override;
+
 private:
     std::string* data_;
+    std::size_t size_;
 };
 
 //Сравнение как отдельные функции
