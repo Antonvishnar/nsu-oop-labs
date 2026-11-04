@@ -2,7 +2,7 @@
 #define OOP_NSU_LABS_ARRAY_H
 
 #include<string>
-#include "Container.h"
+#include "../Container.h"
 
 class Array : public Container{
 public:
@@ -22,6 +22,9 @@ public:
     void put(std::size_t index, const std::string& value);
 
     std::size_t size() const override;
+
+    std::string* begin();
+    std::string* end();
 
 private:
     std::string* data_;

@@ -1,4 +1,2 @@
-file(GLOB SOURCES CONFIGURE_DEPENDS "*.cpp" "*.h")
-add_executable(classwork ${SOURCES}
-        Container.h
-        List.h)
+file(GLOB_RECURSE SOURCES CONFIGURE_DEPENDS "*.cpp" "*.h")
+add_executable(classwork ${SOURCES})

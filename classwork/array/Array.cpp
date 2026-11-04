@@ -76,6 +76,14 @@ std::size_t Array::size() const {
     return size_;
 }
 
+std::string* Array::begin(){
+    return data_;
+}
+
+std::string *Array::end() {
+    return data_ + size_;
+}
+
 std::string Array::get(std::size_t index) const{
     if (index >= size_) {
         return "";

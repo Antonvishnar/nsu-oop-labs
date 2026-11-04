@@ -6,13 +6,9 @@
 #define OOP_NSU_LABS_LIST_H
 #include <cstddef>
 #include <string>
-
-#include "Container.h"
-
-struct ListNode {
-    std::string value;
-    ListNode* next;
-};
+#include "../Container.h"
+#include "../ListIterator.h"
+#include "ListNode.h"
 
 class List : public Container {
 public:
@@ -20,6 +16,14 @@ public:
     ~List() override;
     std::size_t size() const override;
     void add(const std::size_t& index, const std::string& value);
+
+    ListIterator begin() const {
+        return ListIterator{head_};
+    };
+
+    static ListIterator end() {
+        return ListIterator{nullptr};
+    };
 private:
     std::size_t size_;
     ListNode* head_;
