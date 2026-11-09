@@ -4,12 +4,13 @@
 
 #ifndef OOP_NSU_LABS_MUTECONVERTER_H
 #define OOP_NSU_LABS_MUTECONVERTER_H
+#include <vector>
+#include <cstdint>
 #include "Converter.h"
-
 
 class MuteConverter : public Converter{
 public:
-    void Convert() override;
+    void convert(std::vector<std::vector<int16_t>>& samples) override;
 };
 
 

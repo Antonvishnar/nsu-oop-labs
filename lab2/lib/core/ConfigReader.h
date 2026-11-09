@@ -13,12 +13,11 @@ struct Command {
 class ConfigReader {
 public:
     ConfigReader(const std::string& filepath);
-    std::optional<Command> ReadNextLine();
+    std::optional<Command> ReadNextCommand();
 private:
     std::ifstream file_;
-    std::size_t lineNumber_ = 0;
 
-    static Command parseLineIntoCommand(const std::string& line);
+    static std::optional<Command> parseLineIntoCommand(const std::string& line);
 };
 
 
