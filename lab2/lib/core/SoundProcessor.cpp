@@ -12,36 +12,39 @@ SoundProcessor::SoundProcessor(const std::string& outputFile, const std::vector<
 	: outputPath_(outputFile) {
 	for (const std::string& path : wavFiles) {
 		WavReader reader(path);
-		if (inputSamples_.empty()) outputHeader_ = reader.getHeader();
-		std::vector<int16_t> samples;
-		std::vector<int16_t> block;
-		while (reader.readNextSamples(block)) {
-			samples.insert(samples.end(), block.begin(), block.end());
+		if (inputSamples_.empty()) {
+			outputHeader_ = reader.getHeader();
 		}
-		inputSamples_.push_back(samples);
+		std::vector<int16_t> fileSamples;
+		std::vector<int16_t> chunk;
+		while (reader.readNextSamples(chunk)) {
+			fileSamples.insert(fileSamples.end(), chunk.begin(), chunk.end());
+		}
+		inputSamples_.push_back(fileSamples);
 	}
 	outputSamples_ = inputSamples_[0];
 }
 
 void SoundProcessor::ExecCommand(const Command& command) {
 	auto action = createConverter(command);
+
+	std::size_t totalOutput = outputSamples_.size();
 	std::size_t start = action.startSecond * WavReader::SAMPLE_RATE;
-    std::size_t end = outputSamples_.size();
+    std::size_t end = totalOutput;
     if (action.endSecond) {
         end = *action.endSecond * WavReader::SAMPLE_RATE;
     }
-
-    start = std::min(start, outputSamples_.size());
-    end = std::min(end, outputSamples_.size());
+    start = std::min(start, totalOutput);
+    end = std::min(end, totalOutput);
     if (start >= end) return;
 
     std::vector<std::vector<int16_t>> samples;
     samples.emplace_back(outputSamples_.begin() + start, outputSamples_.begin() + end);
 
     if (action.inputIndex) {
-        const auto& in = inputSamples_[*action.inputIndex];
-        std::size_t count = std::min(in.size(), samples[0].size());
-        samples.emplace_back(in.begin(), in.begin() + count);
+        const auto& other = inputSamples_[*action.inputIndex];
+        std::size_t count = std::min(other.size(), samples[0].size());
+        samples.emplace_back(other.begin(), other.begin() + count);
     }
 
     action.converter->convert(samples);

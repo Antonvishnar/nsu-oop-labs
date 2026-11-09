@@ -1,7 +1,6 @@
 #ifndef OOP_NSU_LABS_SOUNDPROCESSOR_H
 #define OOP_NSU_LABS_SOUNDPROCESSOR_H
 
-#include <cstdint>
 #include <string>
 #include <vector>
 

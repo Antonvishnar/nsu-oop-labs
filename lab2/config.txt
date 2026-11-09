@@ -1,5 +1,3 @@
-# Mute the beginning of the first input
 mute 0 3
 
-# Add a 250 ms echo to the mixed result
 delay 5 15 250 0.35

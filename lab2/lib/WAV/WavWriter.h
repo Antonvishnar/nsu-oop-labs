@@ -17,5 +17,4 @@ private:
     std::ofstream file_;
 };
 
-
 #endif //OOP_NSU_LABS_WAVWRITER_H

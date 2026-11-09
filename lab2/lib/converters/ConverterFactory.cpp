@@ -15,9 +15,6 @@ ConverterAction createConverter(const Command& command) {
         action.converter = std::make_unique<MuteConverter>();
         action.startSecond = std::stoul(command.args[0]);
         action.endSecond = std::stoul(command.args[1]);
-        if (action.endSecond < action.startSecond) {
-            throw std::invalid_argument("mute end time must be after start time");
-        }
         action.inputIndex = std::nullopt;
         return action;
     }
