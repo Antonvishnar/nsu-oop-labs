@@ -11,14 +11,11 @@ void printContainerSize(Container* container) {
 
 int main() {
 
-    auto arr = createContainer("array");
-    auto list = createContainer("list");
+    auto arr = createContainer<std::string>("array");
+    auto list = createContainer<std::string>("list");
 
-    printContainerSize(arr.get());
-    printContainerSize(list.get());
-
-    List list1;
-    Array arr1;
+    List<std::string> list1;
+    Array<std::string> arr1;
 
     arr1.put(0, "100");
     arr1.put(1, "150");
@@ -37,6 +34,9 @@ int main() {
     for (auto it = list1.begin(); it != list1.end(); ++it) {
         std::cout << *it <<'\n';
     }
+
+    printContainerSize(&arr1);
+    printContainerSize(&list1);
 
     return 0;
 }

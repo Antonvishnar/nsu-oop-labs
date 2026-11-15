@@ -7,7 +7,14 @@
 #include <memory>
 #include <string>
 #include "Container.h"
+#include "array/Array.h"
+#include "list/List.h"
 
-std::unique_ptr<Container> createContainer(const std::string& name);
+template <typename T>
+std::unique_ptr<Container> createContainer(const std::string& name) {
+    if (name == "list") return std::make_unique<List<T>>();
+    if (name == "array") return std::make_unique<Array<T>>();
+    return nullptr;
+}
 
 #endif //OOP_NSU_LABS_CONTAINERFACTORY_H

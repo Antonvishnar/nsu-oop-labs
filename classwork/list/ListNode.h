@@ -4,10 +4,10 @@
 
 #ifndef OOP_NSU_LABS_LISTNODE_H
 #define OOP_NSU_LABS_LISTNODE_H
-#include <string>
 
+template <typename T>
 struct ListNode {
-    std::string value;
+    T value;
     ListNode* next;
 };
 
