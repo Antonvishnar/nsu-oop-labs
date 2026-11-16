@@ -10,7 +10,6 @@ struct WavHeader {
     char riff[4];
     uint32_t overall_size;
     char wave[4];
-
     char fmt_chunk_marker[4];
     uint32_t length_of_fmt;
     uint16_t format_type;

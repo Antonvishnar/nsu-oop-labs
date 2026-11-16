@@ -18,13 +18,13 @@ void WavReader::parseHeader_() {
     file_.read(reinterpret_cast<char*>(&header_), sizeof(WavHeader));
 
     if (std::string(header_.riff, 4) != "RIFF") {
-        throw std::runtime_error(filepath_ + ": missing 'RIFF' marker");
+        throw std::runtime_error(filepath_ + ": no 'RIFF' marker");
     }
     if (std::string(header_.wave, 4) != "WAVE") {
-        throw std::runtime_error(filepath_ + ": missing 'WAVE' marker");
+        throw std::runtime_error(filepath_ + ": no 'WAVE' marker");
     }
     if (std::string(header_.fmt_chunk_marker, 4) != "fmt ") {
-        throw std::runtime_error(filepath_ + ": missing 'fmt ' marker");
+        throw std::runtime_error(filepath_ + ": no 'fmt ' marker");
     }
 
     //Skip chunks until "data"
@@ -33,7 +33,7 @@ void WavReader::parseHeader_() {
         file_.read(header_.data_chunk_header, sizeof(header_.data_chunk_header));
         file_.read(reinterpret_cast<char*>(&header_.data_size), sizeof(header_.data_size));
         if (!file_) {
-            throw std::runtime_error(filepath_ + ": missing 'data' marker");
+            throw std::runtime_error(filepath_ + ": no 'data' marker");
         }
     }
     remainingDataBytes_ = header_.data_size;
@@ -56,19 +56,22 @@ bool WavReader::readNextSamples(std::vector<int16_t>& buffer, double deltaTime) 
     if (deltaTime <= 0) {
         throw std::invalid_argument("Read duration must be >0");
     }
-    if (remainingDataBytes_ == 0) {
+
+    std::size_t samplesCnt = SAMPLE_RATE * deltaTime;
+    std::size_t bytesToRead = std::min<std::size_t>(
+        remainingDataBytes_, samplesCnt * sizeof(int16_t));
+
+    if (bytesToRead == 0) {
         buffer.clear();
         return false;
     }
-    std::size_t samplesWanted = SAMPLE_RATE * deltaTime;
-    std::size_t samplesAvailable = remainingDataBytes_ / sizeof(int16_t);
-    std::size_t samplesToRead = std::min(samplesWanted, samplesAvailable);
 
-    buffer.resize(samplesToRead);
-    file_.read(reinterpret_cast<char*>(buffer.data()), samplesToRead * sizeof(int16_t));
+    buffer.resize(bytesToRead / sizeof(int16_t));
+    file_.read(reinterpret_cast<char*>(buffer.data()), buffer.size() * sizeof(int16_t));
 
-    remainingDataBytes_ -= samplesToRead* sizeof(int16_t);
-    buffer.resize(samplesToRead);
+    std::size_t actualBytesRead = static_cast<std::size_t>(file_.gcount());
+    buffer.resize(actualBytesRead / sizeof(int16_t));
+    remainingDataBytes_ -= actualBytesRead;
 
-    return samplesToRead > 0;
+    return !buffer.empty();
 }

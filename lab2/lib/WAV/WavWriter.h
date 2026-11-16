@@ -11,7 +11,7 @@
 
 class WavWriter {
 public:
-    WavWriter(const std::string& filepath, const WavHeader& header);
+    WavWriter(const std::string& filepath, WavHeader header);
     void writeSamples(const std::vector<int16_t>& samples);
 private:
     std::ofstream file_;

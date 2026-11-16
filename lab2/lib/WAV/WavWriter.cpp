@@ -5,12 +5,14 @@
 #include "WavWriter.h"
 #include <stdexcept>
 
-WavWriter::WavWriter(const std::string& filepath, const WavHeader& header)
+WavWriter::WavWriter(const std::string& filepath, WavHeader header)
     : file_(filepath, std::ios::binary | std::ios::trunc)
 {
     if (!file_.is_open()) {
         throw std::runtime_error("Cannot create output WAV " + filepath);
     }
+
+    header.overall_size = sizeof(WavHeader) - 8 + header.data_size;
     file_.write(reinterpret_cast<const char*>(&header), sizeof(WavHeader));
 }
 

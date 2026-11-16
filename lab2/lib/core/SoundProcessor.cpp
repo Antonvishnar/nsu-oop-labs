@@ -54,7 +54,6 @@ void SoundProcessor::ExecCommand(const Command& command) {
 void SoundProcessor::WriteOutput() const {
 	WavHeader header = outputHeader_;
 	header.data_size = static_cast<uint32_t>(outputSamples_.size() * sizeof(int16_t));
-	header.overall_size = header.data_size + 36;
 
 	WavWriter writer(outputPath_, header);
 	writer.writeSamples(outputSamples_);
