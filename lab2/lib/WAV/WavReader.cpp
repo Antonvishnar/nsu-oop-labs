@@ -9,7 +9,7 @@ WavReader::WavReader(const std::string& filepath)
     : file_(filepath, std::ios::binary), filepath_(filepath)
 {
     if (!file_.is_open()) {
-        throw std::runtime_error("Cannot open WAV file " + filepath);
+        throw std::runtime_error("Cannot open file " + filepath);
     }
     parseHeader_();
 }
@@ -18,13 +18,13 @@ void WavReader::parseHeader_() {
     file_.read(reinterpret_cast<char*>(&header_), sizeof(WavHeader));
 
     if (std::string(header_.riff, 4) != "RIFF") {
-        throw std::runtime_error(filepath_ + ": no 'RIFF' marker");
+        throw std::runtime_error(filepath_ + ": no RIFF marker");
     }
     if (std::string(header_.wave, 4) != "WAVE") {
-        throw std::runtime_error(filepath_ + ": no 'WAVE' marker");
+        throw std::runtime_error(filepath_ + ": no WAVE marker");
     }
     if (std::string(header_.fmt_chunk_marker, 4) != "fmt ") {
-        throw std::runtime_error(filepath_ + ": no 'fmt ' marker");
+        throw std::runtime_error(filepath_ + ": no fmt marker");
     }
 
     //Skip chunks until "data"
@@ -33,13 +33,13 @@ void WavReader::parseHeader_() {
         file_.read(header_.data_chunk_header, sizeof(header_.data_chunk_header));
         file_.read(reinterpret_cast<char*>(&header_.data_size), sizeof(header_.data_size));
         if (!file_) {
-            throw std::runtime_error(filepath_ + ": no 'data' marker");
+            throw std::runtime_error(filepath_ + ": no data marker");
         }
     }
     remainingDataBytes_ = header_.data_size;
 
     if (header_.format_type != 1) {
-        throw std::runtime_error(filepath_ + ": only uncompressed PCM is supported");
+        throw std::runtime_error(filepath_ + ": only uncompressed is supported");
     }
     if (header_.channels != 1) {
         throw std::runtime_error(filepath_ + ": only mono is supported");
