@@ -15,10 +15,10 @@ public:
     ListIterator& operator++() {
         if (node_) node_ = node_->next;
         return *this;
-    };
+    }
     bool operator!=(const ListIterator& other) const {
         return node_ != other.node_;
-    };
+    }
 private:
     ListNode<T>* node_ = nullptr;
 };

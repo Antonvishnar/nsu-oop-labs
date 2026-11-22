@@ -19,11 +19,11 @@ public:
 
     ListIterator<T> begin() {
         return ListIterator<T>{head_};
-    };
+    }
 
     static ListIterator<T> end() {
         return ListIterator<T>{nullptr};
-    };
+    }
 private:
     std::size_t size_;
     ListNode<T>* head_;

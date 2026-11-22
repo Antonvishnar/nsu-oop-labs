@@ -1,6 +1,8 @@
 #ifndef OOP_NSU_LABS_CONTAINER_H
 #define OOP_NSU_LABS_CONTAINER_H
 
+#include <cstddef>
+
 class Container {
 public:
     virtual ~Container() = default;

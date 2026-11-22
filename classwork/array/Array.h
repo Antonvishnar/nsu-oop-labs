@@ -2,12 +2,14 @@
 #define OOP_NSU_LABS_ARRAY_H
 
 #include "../Container.h"
+#include <memory>
+#include <utility>
+#include <cstddef>
 
 template<typename T>
 class Array : public Container{
 public:
     Array();
-    ~Array();
     Array(const Array& other);
 
     Array& operator=(const Array& other);
@@ -27,7 +29,7 @@ public:
     T* end();
 
 private:
-    T* data_;
+    std::unique_ptr<T[]> data_;
     std::size_t size_;
 };
 
@@ -35,17 +37,14 @@ template<typename T>
 Array<T>::Array() : data_(nullptr), size_(0) {}
 
 template<typename T>
-Array<T>::~Array() {
-    clear();
-}
-
-template<typename T>
-Array<T>::Array(const Array<T> &other) : size_(other.size_), data_(nullptr) {
-    if (size_ > 0) {
-        data_ = new T[size_];
-        for (std::size_t i = 0; i < size_; ++i) {
-            data_[i] = other.data_[i];
+Array<T>::Array(const Array<T>& other) : data_(nullptr), size_(0) {
+    if (other.size_ > 0) {
+        auto temp_data = std::make_unique<T[]>(other.size_);
+        for (std::size_t i = 0; i < other.size_; ++i) {
+            temp_data[i] = other.data_[i];
         }
+        data_ = std::move(temp_data);
+        size_ = other.size_;
     }
 }
 
@@ -54,15 +53,15 @@ Array<T>& Array<T>::operator=(const Array<T>& other) {
     if (this == &other) {
         return *this;
     }
-    delete[] data_;
-    data_ = nullptr;
-    size_ = other.size_;
-    if (size_ > 0) {
-        data_ = new T[size_];
-        for (size_t i = 0; i < size_; ++i) {
-            data_[i] = other.data_[i];
+    std::unique_ptr<T[]> temp_data;
+    if (other.size_ > 0) {
+        temp_data = std::make_unique<T[]>(other.size_);
+        for (std::size_t i = 0; i < other.size_; ++i) {
+            temp_data[i] = other.data_[i];
         }
     }
+    data_ = std::move(temp_data);
+    size_ = other.size_;
     return *this;
 }
 
@@ -79,7 +78,7 @@ const T& Array<T>::operator[](size_t index) const {
 template<typename T>
 bool Array<T>::operator==(const Array<T>& other) const {
     if (size_ != other.size_) return false;
-    for (size_t i = 0; i < size_; ++i) {
+    for (std::size_t i = 0; i < size_; ++i) {
         if (data_[i] != other.data_[i]) return false;
     }
     return true;
@@ -92,25 +91,25 @@ bool Array<T>::operator!=(const Array<T>& other) const {
 
 template<typename T>
 void Array<T>::clear() {
-    if (data_) {
-        delete[] data_;
-        data_ = nullptr;
-        size_ = 0;
-    }
+    data_.reset();
+    size_ = 0;
 }
 
 template<typename T>
 void Array<T>::put(std::size_t index, const T& value) {
     if (index >= size_) {
-        auto* new_data = new T[index + 1];
+        const std::size_t new_size = index + 1;
+        auto new_data = std::make_unique<T[]>(new_size);
         for (std::size_t i = 0; i < size_; ++i) {
             new_data[i] = data_[i];
         }
-        delete[] data_;
-        data_ = new_data;
-        size_ = index + 1;
+        new_data[index] = value;
+        data_ = std::move(new_data);
+        size_ = new_size;
+    } else {
+        T temp(value);
+        data_[index] = std::move(temp);
     }
-    data_[index] = value;
 }
 
 template<typename T>
@@ -120,12 +119,12 @@ std::size_t Array<T>::size() const {
 
 template<typename T>
 T* Array<T>::begin(){
-    return data_;
+    return data_.get();
 }
 
 template<typename T>
 T* Array<T>::end() {
-    return data_ + size_;
+    return data_.get() + size_;
 }
 
 template<typename T>
