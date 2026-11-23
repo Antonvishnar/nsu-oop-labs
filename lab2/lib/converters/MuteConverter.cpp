@@ -2,10 +2,12 @@
 // Created by anton on 15.10.2026.
 //
 #include "MuteConverter.h"
-#include <cstdint>
 
-void MuteConverter::convert(std::vector<std::vector<int16_t>>& samples) {
-    for (auto& sample : samples[0]) {
-        sample = 0;
+#include <algorithm>
+#include "../core/SampleStream.h"
+
+void MuteConverter::convert(SampleStream& stream) {
+    for (std::size_t i = 0; i < stream.size(); ++i) {
+        stream[i] = 0;
     }
 }

@@ -4,14 +4,15 @@
 
 #ifndef OOP_NSU_LABS_MIXCONVERTER_H
 #define OOP_NSU_LABS_MIXCONVERTER_H
-#include <cstdint>
-#include <vector>
 
 #include "Converter.h"
 
 class MixConverter : public Converter{
 public:
-    void convert(std::vector<std::vector<int16_t>>& samples) override;
+    MixConverter(const SampleStream& secondStream);
+    void convert(SampleStream& stream) override;
+private:
+    const SampleStream& secondStream_;
 };
 
 

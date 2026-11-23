@@ -3,14 +3,19 @@
 //
 
 #include "MixConverter.h"
+#include <algorithm>
+#include <utility>
 
-void MixConverter::convert(std::vector<std::vector<int16_t>>& samples) {
-	if (samples.size() < 2) {
-		return;
-	}
 
-	for (std::size_t i = 0; i < samples[0].size() && i < samples[1].size(); ++i) {
-		samples[0][i] = (samples[0][i] + samples[1][i]) / 2;
+MixConverter::MixConverter(const SampleStream& secondStream)
+	: secondStream_(secondStream) {}
+
+void MixConverter::convert(SampleStream& stream) {
+
+	std::size_t count = std::min(stream.size(),  secondStream_.size());
+
+	for (std::size_t i = 0; i < count; ++i) {
+		stream[i] = (stream[i] + secondStream_[i]) / 2;
 	}
 }
 

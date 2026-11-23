@@ -2,9 +2,11 @@
 #define OOP_NSU_LABS_SOUNDPROCESSOR_H
 
 #include <string>
+#include <memory>
 #include <vector>
 
 #include "ConfigReader.h"
+#include "SampleStream.h"
 #include "../WAV/WavReader.h"
 
 class SoundProcessor {
@@ -17,6 +19,7 @@ private:
     std::string outputPath_;
     WavHeader outputHeader_{};
     std::vector<std::vector<int16_t>> inputSamples_;
+    std::vector<std::unique_ptr<SampleStream>> inputStreams_;
     std::vector<int16_t> outputSamples_;
 };
 
