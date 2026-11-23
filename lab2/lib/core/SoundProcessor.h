@@ -6,7 +6,7 @@
 #include <vector>
 
 #include "ConfigReader.h"
-#include "SampleStream.h"
+#include "../converters/SampleStream.h"
 #include "../WAV/WavReader.h"
 
 class SoundProcessor {

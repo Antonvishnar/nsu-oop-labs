@@ -5,7 +5,7 @@
 #ifndef OOP_NSU_LABS_CONVERTER_H
 #define OOP_NSU_LABS_CONVERTER_H
 
-#include "../core/SampleStream.h"
+#include "SampleStream.h"
 
 class Converter {
 public:

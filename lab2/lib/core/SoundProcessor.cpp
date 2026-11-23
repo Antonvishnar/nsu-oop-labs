@@ -49,7 +49,6 @@ void SoundProcessor::ExecCommand(const Command& command) {
 	}
 	start = std::min(start, totalOutput);
 	end = std::min(end, totalOutput);
-	if (start >= end) return;
 
 	VectorSampleStream mainStream(outputSamples_, start, end - start);
 	action.converter->convert(mainStream);

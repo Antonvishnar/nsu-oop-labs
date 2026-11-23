@@ -5,7 +5,7 @@
 #ifndef OOP_NSU_LABS_VECTORSAMPLESTREAM_H
 #define OOP_NSU_LABS_VECTORSAMPLESTREAM_H
 #include <vector>
-#include "SampleStream.h"
+#include "../converters/SampleStream.h"
 
 class VectorSampleStream : public SampleStream {
 public:
