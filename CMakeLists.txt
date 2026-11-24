@@ -14,9 +14,11 @@ include(FetchContent)
 FetchContent_Declare(
         googletest
         URL https://github.com/google/googletest/archive/58d77fa8070e8cec2dc1ed015d66b454c8d78850.zip
+        DOWNLOAD_EXTRACT_TIMESTAMP TRUE
 )
-#FetchContent_MakeAvailable(googletest)
+FetchContent_MakeAvailable(googletest)
 
 add_subdirectory(classwork)
 add_subdirectory(lab1)
 add_subdirectory(lab2)
+add_subdirectory(lab3)
